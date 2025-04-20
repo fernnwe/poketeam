@@ -9,7 +9,7 @@
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
     />
     <script src="//unpkg.com/alpinejs" defer></script>
-    <script src="/pokeAPI.js"></script>
+    <script src="/pokeInfo.js"></script>
     <style>
       img {
         width: 48px;
@@ -18,7 +18,7 @@
     </style>
   </head>
   <body>
-    <div class="container" x-data="getTypes()" x-init="fetchTypes()">
+    <div class="container" x-data="app" x-init="fetchData">
       <h1 class="title has-text-centered">PokeTeam Builder</h1>
       <div class="table-container">
         <table
@@ -36,52 +36,85 @@
             </tr>
           </thead>
           <tbody>
-            <template x-for="type in types" :key="type.name">
+            <template x-for="type in Object.keys(types)" :key="type">
               <tr>
                 <td>
                   <img
-                    :src="sprites[type.name]"
-                    :alt="type.name"
-                    :title="type.name"
+                    :src="types[type].sprite"
+                    :alt="types[type].name"
+                    :title="types[type].name"
                   />
                 </td>
                 <td>
                   <template
-                    x-for="damage in type.double_damage_from"
+                    x-for="damage in types[type].double_damage_from"
                     :key="damage"
                   >
-                    <img :src="sprites[damage]" :alt="damage" :title="damage" />
+                    <img
+                      :src="types[damage].sprite"
+                      :alt="damage"
+                      :title="damage"
+                    />
                   </template>
                 </td>
                 <td>
                   <template
-                    x-for="damage in type.half_damage_from"
+                    x-for="damage in types[type].half_damage_from"
                     :key="damage"
                   >
-                    <img :src="sprites[damage]" :alt="damage" :title="damage" />
-                  </template>
-                </td>
-                <td>
-                  <template x-for="damage in type.no_damage_from" :key="damage">
-                    <img :src="sprites[damage]" :alt="damage" :title="damage" />
+                    <img
+                      :src="types[damage].sprite"
+                      :alt="damage"
+                      :title="damage"
+                    />
                   </template>
                 </td>
                 <td>
                   <template
-                    x-for="damage in type.double_damage_to"
+                    x-for="damage in types[type].no_damage_from"
                     :key="damage"
                   >
-                    <img :src="sprites[damage]" :alt="damage" :title="damage" />
+                    <img
+                      :src="types[damage].sprite"
+                      :alt="damage"
+                      :title="damage"
+                    />
                   </template>
                 </td>
                 <td>
-                  <template x-for="damage in type.half_damage_to" :key="damage">
-                    <img :src="sprites[damage]" :alt="damage" :title="damage" />
+                  <template
+                    x-for="damage in types[type].double_damage_to"
+                    :key="damage"
+                  >
+                    <img
+                      :src="types[damage].sprite"
+                      :alt="damage"
+                      :title="damage"
+                    />
                   </template>
                 </td>
                 <td>
-                  <template x-for="damage in type.no_damage_to" :key="damage">
-                    <img :src="sprites[damage]" :alt="damage" :title="damage" />
+                  <template
+                    x-for="damage in types[type].half_damage_to"
+                    :key="damage"
+                  >
+                    <img
+                      :src="types[damage].sprite"
+                      :alt="damage"
+                      :title="damage"
+                    />
+                  </template>
+                </td>
+                <td>
+                  <template
+                    x-for="damage in types[type].no_damage_to"
+                    :key="damage"
+                  >
+                    <img
+                      :src="types[damage].sprite"
+                      :alt="damage"
+                      :title="damage"
+                    />
                   </template>
                 </td>
               </tr>
