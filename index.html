@@ -28,32 +28,46 @@
     <div class="container" x-data="app" x-init="fetchData">
       <section class="section">
         <!-- Team Builder Section -->
-        <div class="box">
-          <h1 class="title">Tu Equipo</h1>
-          <div class="columns is-multiline is-mobile">
-            <template x-for="pokemon in team">
-              <div
-                class="column is-one-sixth-desktop is-one-quarter-tablet is-half-mobile"
-                @click="removeFromTeam(pokemon)"
-              >
-                <div class="card pokemon-card">
-                  <div class="card-content has-text-centered">
-                    <div class="content">
-                      <p
-                        x-text="'#' + pokemon.id.toString().padStart(3, '0')"
-                      ></p>
-                      <h3 class="title" x-text="pokemon.name"></h3>
-                      <img :src="pokemon.sprite" class="pokemon-img" />
-                      <div class="is-justify-content-center mt-2">
-                        <template x-for="type in pokemon.types">
-                          <span>
-                            <img :src="types[type].sprite" class="type-icon" />
-                          </span>
-                        </template>
-                      </div>
+        <h1 class="title">Tu Equipo</h1>
+        <div class="columns is-multiline is-mobile">
+          <template x-for="pokemon in team">
+            <div
+              class="column is-one-sixth-desktop is-one-quarter-tablet is-half-mobile"
+              @click="removeFromTeam(pokemon)"
+            >
+              <div class="card pokemon-card">
+                <div class="card-content has-text-centered">
+                  <div class="content">
+                    <p
+                      x-text="'#' + pokemon.id.toString().padStart(3, '0')"
+                    ></p>
+                    <h4 class="title" x-text="pokemon.name"></h4>
+                    <img :src="pokemon.sprite" class="pokemon-img" />
+                    <div class="is-justify-content-center mt-2">
+                      <template x-for="type in pokemon.types">
+                        <span>
+                          <img :src="types[type].sprite" class="type-icon" />
+                        </span>
+                      </template>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+      <section class="section">
+        <h1 class="title">Defense/Attack</h1>
+        <div class="fixed-grid has-auto-count">
+          <div class="grid">
+            <template x-for="type in Object.keys(types)">
+              <div class="cell has-text-centered">
+                <img :src="types[type].sprite" class="type-icon" :alt="type" />
+                <p>
+                  <span x-text="defenseScore[type]"></span> /
+                  <span x-text="attackScore[type]"></span>
+                </p>
               </div>
             </template>
           </div>
@@ -71,7 +85,7 @@
               :class="filterType.includes(type) ? 'is-primary' : ''"
               @click="filterType.includes(type) ? filterType = filterType.filter(t => t !== type) : filterType.push(type)"
             >
-              <img :src="types[type].sprite" class="type-icon" />
+              <img :src="types[type].sprite" class="type-icon" :alt="type" />
             </button>
           </template>
         </div>
