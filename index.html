@@ -6,112 +6,51 @@
     <title>PokeTeam Builder</title>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
     />
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="/pokeInfo.js"></script>
-    <style>
-      .pokemon-card {
-        transition: all 0.3s ease;
-        cursor: pointer;
-      }
-      .pokemon-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      }
-      .pokemon-img {
-        width: 256px;
-        height: auto;
-        object-fit: contain;
-        margin: 0 auto;
-        display: block;
-      }
-      .type-badge {
-        margin-right: 5px;
-        margin-bottom: 5px;
-      }
-      .pokemon-id {
-        color: #7a7a7a;
-        font-size: 0.9rem;
-      }
-      .pokemon-name {
-        font-weight: bold;
-        margin: 5px 0;
-      }
-      .section-title {
-        border-bottom: 2px solid #f5f5f5;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-      }
-      .table-container {
-        overflow-x: auto;
-      }
-      .type-icon {
-        width: 64px;
-        height: auto;
-        margin: 2px;
-      }
-      .team-builder {
-        background-color: #f5f5f5;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 30px;
-      }
-      .team-slot {
-        min-height: 120px;
-        border: 2px dashed #dbdbdb;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-      }
-      .team-slot:hover {
-        border-color: #3273dc;
-      }
-      .pokemon-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 15px;
-      }
-      @media (max-width: 768px) {
-        .pokemon-grid {
-          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
+    <!-- Hero Header -->
     <section class="hero is-primary">
       <div class="hero-body">
-        <div class="container">
-          <h1 class="title"><i class="fas fa-paw"></i> PokeTeam Builder</h1>
-          <p class="subtitle">Crea y analiza tu equipo Pokémon perfecto</p>
+        <div class="container has-text-centered">
+          <h1 class="title">PokeTeam Builder 1ra Generación</h1>
+          <p class="subtitle">
+            Crea y analiza tu equipo Pokémon perfecto para la primera generación
+            (Rojo, Azul y Amarillo)
+          </p>
         </div>
       </div>
     </section>
-
-    <section class="section">
-      <div class="container" x-data="app" x-init="fetchData">
+    <div class="container" x-data="app" x-init="fetchData">
+      <section class="section">
         <!-- Team Builder Section -->
-        <div class="team-builder">
-          <h2 class="title is-4 section-title">Tu Equipo</h2>
-          <div class="columns is-multiline">
+        <div class="box">
+          <h1 class="title">Tu Equipo</h1>
+          <div class="columns is-multiline is-mobile">
             <template x-for="pokemon in team">
-              <div class="column is-one-sixth" @click="removeFromTeam(pokemon)">
-                <div class="team-slot has-text-centered">
-                  <div>
-                    <img :src="pokemon.sprite" class="pokemon-img" />
-                    <div class="is-centered">
-                      <template x-for="type in pokemon.types">
-                        <span>
-                          <img :src="types[type].sprite" class="type-icon" />
-                        </span>
-                      </template>
+              <div
+                class="column is-one-sixth-desktop is-one-quarter-tablet is-half-mobile"
+                @click="removeFromTeam(pokemon)"
+              >
+                <div class="card pokemon-card">
+                  <div class="card-content has-text-centered">
+                    <div class="content">
+                      <p
+                        x-text="'#' + pokemon.id.toString().padStart(3, '0')"
+                      ></p>
+                      <h3 class="title" x-text="pokemon.name"></h3>
+                      <img :src="pokemon.sprite" class="pokemon-img" />
+                      <div class="is-justify-content-center mt-2">
+                        <template x-for="type in pokemon.types">
+                          <span>
+                            <img :src="types[type].sprite" class="type-icon" />
+                          </span>
+                        </template>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -119,57 +58,60 @@
             </template>
           </div>
         </div>
+      </section>
+      <section class="section">
+        <!-- Pokemon Select Section -->
 
-        <!-- Pokemon Grid -->
-        <h2 class="title is-4 section-title">Pokémon Disponibles</h2>
-        <div class="">
-          <h3>Filter:</h3>
-          <div class="buttons">
-            <template x-for="type in Object.keys(types)">
+        <h2 class="title">Pokémon Disponibles</h2>
+        <h3 class="subtitle">Filtrar por tipo</h3>
+        <div class="buttons is-flex-wrap-wrap">
+          <template x-for="type in Object.keys(types)">
             <button
-              class="button" :class="filterType.includes(type) ? 'is-primary' : ''"
-              @click="filterType.includes(type) ? filterType=filterType.filter(t => t!= type) : filterType.push(type)">
-              <img :src="types[type].sprite"></img>
+              class="button"
+              :class="filterType.includes(type) ? 'is-primary' : ''"
+              @click="filterType.includes(type) ? filterType = filterType.filter(t => t !== type) : filterType.push(type)"
+            >
+              <img :src="types[type].sprite" class="type-icon" />
             </button>
           </template>
-          </div>
         </div>
-        <div class="pokemon-grid">
+        <div class="grid">
           <template x-for="pokemon in pokemons">
             <div
-              class="pokemon-card box"
+              class="cell card pokemon-card"
               @click="addToTeam(pokemon)"
               x-show="filterType.includes(pokemon.types[0]) || filterType.includes(pokemon.types[1]) || filterType.length == 0"
             >
-              <div class="has-text-centered">
-                <span
-                  class="pokemon-id"
-                  x-text="'#' + pokemon.id.toString().padStart(3, '0')"
-                ></span>
-                <h3 class="pokemon-name" x-text="pokemon.name"></h3>
-                <img
-                  :src="pokemon.sprite"
-                  :alt="pokemon.name"
-                  class="pokemon-img"
-                />
-                <div class="is-centered">
-                  <template x-for="type in pokemon.types">
-                    <span>
-                      <img :src="types[type].sprite" class="type-icon" />
-                      <span x-text="types[type].name"></span>
-                    </span>
-                  </template>
+              <div class="card-content">
+                <div class="content has-text-centered">
+                  <p x-text="'#' + pokemon.id.toString().padStart(3, '0')"></p>
+                  <h4 x-text="pokemon.name"></h4>
+                  <img
+                    :src="pokemon.sprite"
+                    :alt="pokemon.name"
+                    class="pokemon-img"
+                  />
+                  <div class="is-justify-content-center">
+                    <template x-for="type in pokemon.types">
+                      <span>
+                        <img :src="types[type].sprite" class="type-icon" />
+                        <span x-text="types[type].name"></span>
+                      </span>
+                    </template>
+                  </div>
                 </div>
               </div>
             </div>
           </template>
         </div>
+      </section>
 
+      <section class="section">
         <!-- Type Effectiveness Table -->
-        <h2 class="title is-4 section-title">Tabla de Efectividad</h2>
+        <h2 class="title">Tabla de Efectividad</h2>
         <div class="table-container">
           <table
-            class="table is-bordered is-striped is-hoverable has-text-centered is-fullwidth"
+            class="table is-bordered is-striped is-hoverable has-text-centered"
           >
             <thead>
               <tr>
@@ -186,127 +128,39 @@
               <template x-for="type in Object.keys(types)" :key="type">
                 <tr>
                   <td>
-                    <div class="is-justify-content-center">
-                      <span>
-                        <img :src="types[type].sprite" class="type-icon" />
-                      </span>
-                      <span x-text="types[type].name"></span>
-                    </div>
+                    <img :src="types[type].sprite" class="type-icon" />
+                    <span x-text="types[type].name"></span>
                   </td>
-                  <td>
-                    <div class="is-justify-content-center">
+                  <template
+                    x-for="category in ['double_damage_from', 'half_damage_from', 'no_damage_from', 'double_damage_to', 'half_damage_to', 'no_damage_to']"
+                  >
+                    <td>
                       <template
-                        x-for="damage in types[type].double_damage_from"
+                        x-for="damage in types[type][category]"
                         :key="damage"
                       >
-                        <span>
-                          <img
-                            :src="types[damage].sprite"
-                            :alt="damage"
-                            :title="damage"
-                            class="type-icon"
-                          />
-                        </span>
+                        <img
+                          :src="types[damage].sprite"
+                          :alt="damage"
+                          :title="damage"
+                          class="type-icon"
+                        />
                       </template>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="is-justify-content-center">
-                      <template
-                        x-for="damage in types[type].half_damage_from"
-                        :key="damage"
-                      >
-                        <span>
-                          <img
-                            :src="types[damage].sprite"
-                            :alt="damage"
-                            :title="damage"
-                            class="type-icon"
-                          />
-                        </span>
-                      </template>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="is-justify-content-center">
-                      <template
-                        x-for="damage in types[type].no_damage_from"
-                        :key="damage"
-                      >
-                        <span>
-                          <img
-                            :src="types[damage].sprite"
-                            :alt="damage"
-                            :title="damage"
-                            class="type-icon"
-                          />
-                        </span>
-                      </template>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="is-justify-content-center">
-                      <template
-                        x-for="damage in types[type].double_damage_to"
-                        :key="damage"
-                      >
-                        <span>
-                          <img
-                            :src="types[damage].sprite"
-                            :alt="damage"
-                            :title="damage"
-                            class="type-icon"
-                          />
-                        </span>
-                      </template>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="is-justify-content-center">
-                      <template
-                        x-for="damage in types[type].half_damage_to"
-                        :key="damage"
-                      >
-                        <span>
-                          <img
-                            :src="types[damage].sprite"
-                            :alt="damage"
-                            :title="damage"
-                            class="type-icon"
-                          />
-                        </span>
-                      </template>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="is-justify-content-center">
-                      <template
-                        x-for="damage in types[type].no_damage_to"
-                        :key="damage"
-                      >
-                        <span>
-                          <img
-                            :src="types[damage].sprite"
-                            :alt="damage"
-                            :title="damage"
-                            class="type-icon"
-                          />
-                        </span>
-                      </template>
-                    </div>
-                  </td>
+                    </td>
+                  </template>
                 </tr>
               </template>
             </tbody>
           </table>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <footer class="footer">
       <div class="content has-text-centered">
         <p>
-          <strong>PokeTeam Builder</strong> desarrollado por Deybis Melendez
+          <strong>PokeTeam Builder</strong> desarrollado por
+          <a href="#">Deybis Melendez</a>. ¡Atrapa y entrena con estilo!
         </p>
       </div>
     </footer>

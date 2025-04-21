@@ -1,0 +1,20 @@
+.type-icon {
+  width: 64px;
+  height: auto;
+  margin: 3px;
+}
+.pokemon-img {
+  width: 128px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+.pokemon-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.pokemon-card:hover {
+  transform: translateY(-10px);
+}
