@@ -6,6 +6,8 @@ function app() {
     filterType: [],
     defenseScore: {},
     attackScore: {},
+    totalDefenseScore: 0,
+    totalAttackScore: 0,
     uniqueID: 0,
     calculateEffectiveness(pokemonTypes) {
       let multiplier = 1;
@@ -16,6 +18,16 @@ function app() {
         if (typeData.no_damage_from.includes(attackType)) multiplier *= 0;
       });
       return multiplier;
+    },
+    recalculateTotals() {
+      this.totalDefenseScore = 0;
+      for (const type in this.defenseScore) {
+        this.totalDefenseScore += this.defenseScore[type];
+      }
+      this.totalAttackScore = 0;
+      for (const type in this.attackScore) {
+        this.totalAttackScore += this.attackScore[type];
+      }
     },
     async fetchData() {
       this.types = await fetch("/types.json").then((response) =>
@@ -58,6 +70,7 @@ function app() {
         this.types[type].no_damage_to.forEach((damage) => {
           this.attackScore[damage] -= 1.5;
         });
+        this.recalculateTotals();
       });
     },
     removeFromTeam(pokemon) {
@@ -81,6 +94,7 @@ function app() {
           this.attackScore[damage] += 1.5;
         });
       });
+      this.recalculateTotals();
       this.team = this.team.filter((p) => p.uniqueID != pokemon.uniqueID);
     },
   };
