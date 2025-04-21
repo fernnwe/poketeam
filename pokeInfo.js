@@ -50,28 +50,28 @@ function app() {
         pokemon.uniqueID = this.uniqueID;
         this.uniqueID++;
         this.team.push(pokemon);
+        pokemon.types.forEach((type) => {
+          this.types[type].double_damage_from.forEach((damage) => {
+            this.defenseScore[damage]--;
+          });
+          this.types[type].half_damage_from.forEach((damage) => {
+            this.defenseScore[damage] += 0.5;
+          });
+          this.types[type].no_damage_from.forEach((damage) => {
+            this.defenseScore[damage] += 1.5;
+          });
+          this.types[type].double_damage_to.forEach((damage) => {
+            this.attackScore[damage]++;
+          });
+          this.types[type].half_damage_to.forEach((damage) => {
+            this.attackScore[damage] -= 0.5;
+          });
+          this.types[type].no_damage_to.forEach((damage) => {
+            this.attackScore[damage] -= 1.5;
+          });
+          this.recalculateTotals();
+        });
       }
-      pokemon.types.forEach((type) => {
-        this.types[type].double_damage_from.forEach((damage) => {
-          this.defenseScore[damage]--;
-        });
-        this.types[type].half_damage_from.forEach((damage) => {
-          this.defenseScore[damage] += 0.5;
-        });
-        this.types[type].no_damage_from.forEach((damage) => {
-          this.defenseScore[damage] += 1.5;
-        });
-        this.types[type].double_damage_to.forEach((damage) => {
-          this.attackScore[damage]++;
-        });
-        this.types[type].half_damage_to.forEach((damage) => {
-          this.attackScore[damage] -= 0.5;
-        });
-        this.types[type].no_damage_to.forEach((damage) => {
-          this.attackScore[damage] -= 1.5;
-        });
-        this.recalculateTotals();
-      });
     },
     removeFromTeam(pokemon) {
       pokemon.types.forEach((type) => {
