@@ -8,27 +8,33 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
     />
+    <link rel="stylesheet" href="style.css">
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="/pokeInfo.js"></script>
-    <link rel="stylesheet" href="/style.css" />
+    <!-- Google Fonts para mejorar la tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body class="has-background-black">
     <!-- Hero Header -->
-    <section class="hero is-primary">
+    <section class="hero is-medium" style="background-color: #ffcb05;">
       <div class="hero-body">
         <div class="container has-text-centered">
-          <h1 class="title">PokeTeam Builder 1ra Generación</h1>
-          <p class="subtitle">
+          <h1 class="subtitle is-size-4 has-text-black" style="font-family: 'Press Start 2P', cursive;">
+            PokeTeam Builder 1ra Generación
+          </h1>
+          <p class="subtitle is-size-4 has-text-black" style="font-family: 'Luckiest Guy', cursive;
+">
             Crea y analiza tu equipo Pokémon perfecto para la primera generación
             (Rojo, Azul y Amarillo)
           </p>
         </div>
       </div>
     </section>
+    
     <div class="container" x-data="app" x-init="fetchData">
       <section class="section">
         <!-- Team Builder Section -->
-        <h1 class="title">Tu Equipo</h1>
+        <h1 class="title has-text-danger" style="font-family: 'Poppins', sans-serif;">Tu Equipo</h1>
         <div class="columns is-multiline is-mobile">
           <template x-for="pokemon in team">
             <div
@@ -40,8 +46,9 @@
                   <div class="content">
                     <p
                       x-text="'#' + pokemon.id.toString().padStart(3, '0')"
+                      style="font-family: 'Poppins', sans-serif;"
                     ></p>
-                    <h4 class="title" x-text="pokemon.name"></h4>
+                    <h4 class="title" x-text="pokemon.name" style="font-family: 'Poppins', sans-serif;"></h4>
                     <img :src="pokemon.sprite" class="pokemon-img" />
                     <div class="is-justify-content-center mt-2">
                       <template x-for="type in pokemon.types">
@@ -57,8 +64,9 @@
           </template>
         </div>
       </section>
+      
       <section class="section">
-        <h1 class="title">Ataque / Defensa</h1>
+        <h1 class="title has-text-danger" style="font-family: 'Poppins', sans-serif;">Ataque / Defensa</h1>
         <div class="fixed-grid has-auto-count">
           <div class="grid">
             <template x-for="type in Object.keys(types)">
@@ -86,16 +94,16 @@
           Defensa total: <span x-text="totalDefenseScore.toFixed(2)"></span>
         </p>
       </section>
+      
       <section class="section">
         <!-- Pokemon Select Section -->
-
-        <h2 class="title">Pokémon Disponibles</h2>
-        <h3 class="subtitle">Filtrar por tipo</h3>
+        <h2 class="title has-text-danger" style="font-family: 'Poppins', sans-serif;">Pokémon Disponibles</h2>
+        <h3 class="subtitle has-text-light">Filtrar por tipo</h3>
         <div class="buttons is-flex-wrap-wrap">
           <template x-for="type in Object.keys(types)">
             <button
               class="button"
-              :class="filterType.includes(type) ? 'is-primary' : ''"
+              :class="filterType.includes(type) ? 'is-danger' : ''"
               @click="filterType.includes(type) ? filterType = filterType.filter(t => t !== type) : filterType.push(type)"
             >
               <img :src="types[type].sprite" class="type-icon" :alt="type" />
@@ -135,7 +143,7 @@
 
       <section class="section">
         <!-- Type Effectiveness Table -->
-        <h2 class="title">Tabla de Efectividad</h2>
+        <h2 class="title has-text-danger" style="font-family: 'Poppins', sans-serif;">Tabla de Efectividad</h2>
         <div class="table-container">
           <table
             class="table is-bordered is-striped is-hoverable has-text-centered"
@@ -183,11 +191,11 @@
       </section>
     </div>
 
-    <footer class="footer">
+    <footer class="footer" style="background-color: #ffcb05;">
       <div class="content has-text-centered">
-        <p>
+        <p class="has-text-black">
           <strong>PokeTeam Builder</strong> desarrollado por
-          <a href="#">Deybis Melendez</a>. ¡Atrapa y entrena con estilo!
+          <a href="#" class="has-text-dark">Deybis Melendez</a>. ¡Atrapa y entrena con estilo!
         </p>
       </div>
     </footer>

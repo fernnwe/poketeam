@@ -18,3 +18,22 @@
 .pokemon-card:hover {
   transform: translateY(-10px);
 }
+
+.subtitle {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 2.5rem; 
+}
+
+/* Para pantallas más pequeñas (móviles) */
+@media (max-width: 768px) {
+  .subtitle {
+    font-size: 1.8rem; 
+  }
+}
+
+/* Para pantallas más grandes (tabletas y desktop) */
+@media (min-width: 1024px) {
+  .subtitle {
+    font-size: 3rem; 
+  }
+}
