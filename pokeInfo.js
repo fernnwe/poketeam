@@ -9,15 +9,33 @@ function app() {
     totalDefenseScore: 0,
     totalAttackScore: 0,
     uniqueID: 0,
-    calculateEffectiveness(pokemonTypes) {
+    calculateDefense(attackType, pokemonTypes) {
       let multiplier = 1;
       pokemonTypes.forEach((type) => {
         const typeData = this.types[type];
-        if (typeData.double_damage_from.forEach(attackType)) multiplier *= 2;
+        if (typeData.double_damage_from.includes(attackType)) multiplier *= 2;
         if (typeData.half_damage_from.includes(attackType)) multiplier *= 0.5;
         if (typeData.no_damage_from.includes(attackType)) multiplier *= 0;
       });
-      return multiplier;
+      return (multiplier - 1) * -1;
+    },
+    calculateAttack(defendingType, pokemonTypes) {
+      let totalEffectiveness = 0;
+
+      pokemonTypes.forEach((attackingType) => {
+        const defendingData = this.types[defendingType];
+        if (!defendingData) return;
+
+        if (defendingData.double_damage_from.includes(attackingType)) {
+          totalEffectiveness += 1;
+        } else if (defendingData.half_damage_from.includes(attackingType)) {
+          totalEffectiveness -= 0.5;
+        } else if (defendingData.no_damage_from.includes(attackingType)) {
+          totalEffectiveness -= 1.5;
+        }
+      });
+
+      return totalEffectiveness / pokemonTypes.length;
     },
     recalculateTotals() {
       this.totalDefenseScore = 0;
@@ -50,52 +68,24 @@ function app() {
         pokemon.uniqueID = this.uniqueID;
         this.uniqueID++;
         this.team.push(pokemon);
-        pokemon.types.forEach((type) => {
-          this.types[type].double_damage_from.forEach((damage) => {
-            this.defenseScore[damage]--;
-          });
-          this.types[type].half_damage_from.forEach((damage) => {
-            this.defenseScore[damage] += 0.5;
-          });
-          this.types[type].no_damage_from.forEach((damage) => {
-            this.defenseScore[damage] += 1.5;
-          });
-          this.types[type].double_damage_to.forEach((damage) => {
-            this.attackScore[damage]++;
-          });
-          this.types[type].half_damage_to.forEach((damage) => {
-            this.attackScore[damage] -= 0.5;
-          });
-          this.types[type].no_damage_to.forEach((damage) => {
-            this.attackScore[damage] -= 1.5;
-          });
-          this.recalculateTotals();
-        });
+        for (const type in this.types) {
+          let effectiveness = this.calculateDefense(type, pokemon.types);
+          this.defenseScore[type] += effectiveness;
+          effectiveness = this.calculateAttack(type, pokemon.types);
+          this.attackScore[type] += effectiveness;
+        }
+        this.recalculateTotals();
       }
     },
     removeFromTeam(pokemon) {
-      pokemon.types.forEach((type) => {
-        this.types[type].double_damage_from.forEach((damage) => {
-          this.defenseScore[damage]++;
-        });
-        this.types[type].half_damage_from.forEach((damage) => {
-          this.defenseScore[damage] -= 0.5;
-        });
-        this.types[type].no_damage_from.forEach((damage) => {
-          this.defenseScore[damage] -= 1.5;
-        });
-        this.types[type].double_damage_to.forEach((damage) => {
-          this.attackScore[damage]--;
-        });
-        this.types[type].half_damage_to.forEach((damage) => {
-          this.attackScore[damage] += 0.5;
-        });
-        this.types[type].no_damage_to.forEach((damage) => {
-          this.attackScore[damage] += 1.5;
-        });
-      });
-      this.recalculateTotals();
+      for (const type in this.types) {
+        let effectiveness = this.calculateDefense(type, pokemon.types);
+        this.defenseScore[type] -= effectiveness;
+        effectiveness = this.calculateAttack(type, pokemon.types);
+        this.attackScore[type] -= effectiveness;
+      }
       this.team = this.team.filter((p) => p.uniqueID != pokemon.uniqueID);
+      this.recalculateTotals();
     },
   };
 }

@@ -132,16 +132,16 @@
   "ghost": {
     "id": 8,
     "double_damage_from": [],
-    "half_damage_from": [],
+    "half_damage_from": ["poison", "bug"],
     "no_damage_from": ["normal", "fighting"],
     "double_damage_to": ["ghost"],
     "half_damage_to": [],
-    "no_damage_to": ["normal", "psychic"],
+    "no_damage_to": [],
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-iv/diamond-pearl/8.png"
   },
   "dragon": {
     "id": 16,
-    "double_damage_from": [],
+    "double_damage_from": ["ice"],
     "half_damage_from": ["fire", "water", "electric", "grass"],
     "no_damage_from": [],
     "double_damage_to": ["dragon"],

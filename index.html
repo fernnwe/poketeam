@@ -58,15 +58,22 @@
         </div>
       </section>
       <section class="section">
-        <h1 class="title">Defense/Attack</h1>
+        <h1 class="title">Ataque / Defensa</h1>
         <div class="fixed-grid has-auto-count">
           <div class="grid">
             <template x-for="type in Object.keys(types)">
               <div class="cell has-text-centered">
                 <img :src="types[type].sprite" class="type-icon" :alt="type" />
                 <p>
-                  <span x-text="defenseScore[type]"></span> /
-                  <span x-text="attackScore[type]"></span>
+                  <span
+                    :class="attackScore[type] >= 0 ? 'has-text-success' : 'has-text-danger'"
+                    x-text="attackScore[type]"
+                  ></span>
+                  /
+                  <span
+                    :class="defenseScore[type] >= 0 ? 'has-text-success' : 'has-text-danger'"
+                    x-text="defenseScore[type]"
+                  ></span>
                 </p>
               </div>
             </template>
